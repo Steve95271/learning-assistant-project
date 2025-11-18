@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: learning-assisstant
+  profiles:
+    active: local
+  datasource:
+    username: ${learning-assistant.datasource.username}
+    password: ${learning-assistant.datasource.password}
+    url: jdbc:mysql://${learning-assistant.datasource.ipAddr}:${learning-assistant.datasource.port}/learning_assistant?useSSL=true&allowPublicKeyRetrieval=true&serverTimezone=UTC&connectTimeout=5000&socketTimeout=60000
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  ai:
+    openai:
+      api-key: ${learning-assistant.OPENAI_API_KEY}
+    chat:
+      memory:
+        repository:
+          jdbc:
+            initialize-schema: always
+      client:
+        enabled: false
+
+logging:
+  level:
+    org:
+      springframework:
+        ai:
+          chat:
+            client:
+              advisor: DEBUG
