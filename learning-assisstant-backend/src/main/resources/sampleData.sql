@@ -1,0 +1,21 @@
+-- Sample data for topics table
+INSERT INTO topics (id, user_id, name, description, conversation_count, file_count, status, last_accessed_at,
+                    created_at, updated_at, deleted_at)
+VALUES (1, 100, 'Data Structures',
+        'Learning fundamental data structures including arrays, linked lists, stacks, queues, trees, and graphs', 12, 3,
+        'active', '2025-11-18 14:30:00', '2025-01-15 10:00:00', '2025-11-18 14:30:00', NULL),
+       (2, 100, 'Sorting Algorithms',
+        'Study and practice various sorting algorithms like quicksort, mergesort, heapsort, and bubble sort with complexity analysis',
+        8, 2, 'active', '2025-11-19 09:15:00', '2025-02-01 11:20:00', '2025-11-19 09:15:00', NULL),
+       (3, 101, 'System Design',
+        'High-level system architecture, scalability, load balancing, caching strategies, and database design patterns',
+        15, 5, 'active', '2025-11-20 16:45:00', '2025-03-10 08:30:00', '2025-11-20 16:45:00', NULL),
+       (4, 101, 'Dynamic Programming',
+        'Master DP concepts including memoization, tabulation, optimization techniques, and common problem patterns', 6,
+        1, 'active', '2025-11-17 13:20:00', '2025-06-22 14:00:00', '2025-11-17 13:20:00', NULL),
+       (5, 102, 'Python Advanced Features',
+        'Decorators, generators, context managers, metaclasses, and async/await programming in Python', 5, 2, 'active',
+        '2025-09-30 11:00:00', '2025-07-05 09:45:00', '2025-11-10 10:30:00', NULL),
+       (6, 102, 'REST API Design',
+        'Best practices for designing RESTful APIs, HTTP methods, status codes, versioning, and authentication strategies',
+        0, 0, 'active', NULL, '2025-11-19 15:00:00', '2025-11-19 15:00:00', NULL);
