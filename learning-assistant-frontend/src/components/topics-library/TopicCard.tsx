@@ -64,7 +64,8 @@ const TopicCard: React.FC<TopicCardProps> = ({
           {topic.conversationsCount} conversation
           {topic.conversationsCount !== 1 ? "s" : ""}
         </div>
-        <div className="flex gap-2">
+        {/* TODO File preview is needed the AI pick emoji when uploading file */}
+        {/* <div className="flex gap-2">
           {topic.filePreviews.slice(0, 3).map((icon, idx) => (
             <div
               key={idx}
@@ -78,7 +79,7 @@ const TopicCard: React.FC<TopicCardProps> = ({
               +{topic.filePreviews.length - 3}
             </div>
           )}
-        </div>
+        </div> */}
       </div>
     </div>
   );
