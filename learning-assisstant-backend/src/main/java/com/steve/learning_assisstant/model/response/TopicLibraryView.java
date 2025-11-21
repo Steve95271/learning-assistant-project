@@ -2,6 +2,7 @@ package com.steve.learning_assisstant.model.response;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.steve.learning_assisstant.model.entity.Topic;
 import lombok.Builder;
 import lombok.Data;
 
@@ -18,5 +19,18 @@ public class TopicLibraryView {
     private Integer filesCount;
     private Integer conversationsCount;
     private List<String> filePreviews;
+
+    public static TopicLibraryView fromTopicToTopicLibraryView(Topic topic) {
+        return builder()
+                .id(topic.getId())
+                .title(topic.getName())
+                .description(topic.getDescription())
+                .lastUpdated(topic.getUpdatedAt().toString())
+                .filesCount(topic.getFileCount())
+                .conversationsCount(topic.getConversationCount())
+                // TODO Add file preview icons
+                .filePreviews(List.of())
+                .build();
+    }
 
 }
