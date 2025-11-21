@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import Modal from '../common/Modal';
-import type { NewTopicFormData } from '../../types';
+import React, { useState } from "react";
+import Modal from "../common/Modal";
+import type { NewTopicFormData } from "../../types";
 
 interface NewTopicModalProps {
   isOpen: boolean;
@@ -14,14 +14,14 @@ const NewTopicModal: React.FC<NewTopicModalProps> = ({
   onSubmit,
 }) => {
   const [formData, setFormData] = useState<NewTopicFormData>({
-    name: '',
-    description: '',
+    name: "",
+    description: "",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit(formData);
-    setFormData({ name: '', description: '' });
+    setFormData({ name: "", description: "" });
     onClose();
   };
 
@@ -39,9 +39,7 @@ const NewTopicModal: React.FC<NewTopicModalProps> = ({
             type="text"
             id="topicName"
             value={formData.name}
-            onChange={(e) =>
-              setFormData({ ...formData, name: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             placeholder="e.g., Machine Learning Basics"
             required
             className="w-full px-5 py-4 bg-white/[0.04] border border-white/[0.08] rounded-[14px] text-soft-white text-[15px] transition-all duration-300 focus:outline-none focus:border-electric focus:bg-white/[0.06] focus:shadow-[0_0_0_4px_rgba(0,255,136,0.1)] placeholder:text-muted-blue"
