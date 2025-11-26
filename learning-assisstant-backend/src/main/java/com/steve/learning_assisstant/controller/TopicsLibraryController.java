@@ -1,7 +1,7 @@
 package com.steve.learning_assisstant.controller;
 
 import com.steve.learning_assisstant.model.dto.TopicDTO;
-import com.steve.learning_assisstant.model.response.TopicLibraryView;
+import com.steve.learning_assisstant.model.viewObject.TopicLibraryVO;
 import com.steve.learning_assisstant.service.TopicLibraryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +23,13 @@ public class TopicsLibraryController {
     }
 
     @GetMapping("/getTopicsByUserId")
-    public ResponseEntity<List<TopicLibraryView>> getTopicsByUserId(@RequestParam("userId") Long userId) {
+    public ResponseEntity<List<TopicLibraryVO>> getTopicsByUserId(@RequestParam("userId") Long userId) {
         log.info("Get user topics by user id: {}", userId);
         return ResponseEntity.ok(topicLibraryService.getTopicsByUserId(userId));
     }
 
     @PostMapping("/createTopic")
-    public ResponseEntity<TopicLibraryView> createTopic (@RequestBody TopicDTO topicDTO) {
+    public ResponseEntity<TopicLibraryVO> createTopic (@RequestBody TopicDTO topicDTO) {
 
         log.info("Create topic, {}", topicDTO);
 
@@ -37,8 +37,8 @@ public class TopicsLibraryController {
         Long topicId = topicLibraryService.createTopic(topicDTO);
 
         // Return new topic
-        TopicLibraryView topicLibraryView = topicLibraryService.getTopicById(topicId);
-        return ResponseEntity.ok(topicLibraryView);
+        TopicLibraryVO topicLibraryVO = topicLibraryService.getTopicById(topicId);
+        return ResponseEntity.ok(topicLibraryVO);
     }
 
 }
