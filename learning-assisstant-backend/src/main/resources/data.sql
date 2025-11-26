@@ -28,29 +28,31 @@ VALUES (1001, 100, 'Data Structures & Algorithms',
         0, 0, 'active', '2025-11-15 13:45:00', '2025-05-12 15:30:00', '2025-11-15 13:45:00');
 
 -- Insert topic files
-INSERT INTO topic_files (id, topic_id, user_id, filename, file_type, file_size, storage_path, storage_key, uploaded_at)
-VALUES (2001, 1001, 100, 'introduction-to-algorithms.pdf', 'application/pdf', 2458624,
+-- Insert topic files with icon field
+INSERT INTO topic_files (id, topic_id, user_id, filename, icon, file_type, file_size, storage_path, storage_key,
+                         uploaded_at)
+VALUES (2001, 1001, 100, 'introduction-to-algorithms.pdf', '📚', 'application/pdf', 2458624,
         '/storage/files/2025/02/intro-algorithms.pdf', 'file_2001_intro_algo', '2025-02-01 10:00:00'),
-       (2002, 1001, 100, 'big-o-notation-cheatsheet.png', 'image/png', 145920,
+       (2002, 1001, 100, 'big-o-notation-cheatsheet.png', '📊', 'image/png', 145920,
         '/storage/files/2025/02/bigo-cheatsheet.png', 'file_2002_bigo_chart', '2025-02-03 14:30:00'),
-       (2003, 1002, 100, 'system-design-primer.pdf', 'application/pdf', 3872512,
+       (2003, 1002, 100, 'system-design-primer.pdf', '🏗️', 'application/pdf', 3872512,
         '/storage/files/2025/02/sysdesign-primer.pdf', 'file_2003_sysdesign', '2025-02-15 11:00:00'),
-       (2004, 1002, 100, 'microservices-patterns.pdf', 'application/pdf', 1923584,
+       (2004, 1002, 100, 'microservices-patterns.pdf', '🔧', 'application/pdf', 1923584,
         '/storage/files/2025/02/microservices.pdf', 'file_2004_microservices', '2025-02-16 09:45:00'),
-       (2005, 1002, 100, 'caching-strategies-diagram.png', 'image/png', 298016,
+       (2005, 1002, 100, 'caching-strategies-diagram.png', '💾', 'image/png', 298016,
         '/storage/files/2025/02/caching-diagram.png', 'file_2005_caching', '2025-02-20 16:20:00'),
-       (2006, 1003, 100, 'spring-boot-reference.pdf', 'application/pdf', 5243392,
+       (2006, 1003, 100, 'spring-boot-reference.pdf', '🍃', 'application/pdf', 5243392,
         '/storage/files/2025/03/spring-boot-ref.pdf', 'file_2006_spring_ref', '2025-03-01 14:00:00'),
-       (2007, 1004, 100, 'react-hooks-guide.pdf', 'application/pdf', 876544, '/storage/files/2025/03/react-hooks.pdf',
-        'file_2007_react_hooks', '2025-03-10 15:00:00'),
-       (2008, 1004, 100, 'typescript-react-patterns.md', 'text/markdown', 45120, '/storage/files/2025/03/ts-react.md',
-        'file_2008_ts_patterns', '2025-03-12 10:30:00'),
-       (2009, 1005, 100, 'sql-optimization-guide.pdf', 'application/pdf', 1567890,
+       (2007, 1004, 100, 'react-hooks-guide.pdf', '⚛️', 'application/pdf', 876544,
+        '/storage/files/2025/03/react-hooks.pdf', 'file_2007_react_hooks', '2025-03-10 15:00:00'),
+       (2008, 1004, 100, 'typescript-react-patterns.md', '📝', 'text/markdown', 45120,
+        '/storage/files/2025/03/ts-react.md', 'file_2008_ts_patterns', '2025-03-12 10:30:00'),
+       (2009, 1005, 100, 'sql-optimization-guide.pdf', '⚡', 'application/pdf', 1567890,
         '/storage/files/2025/04/sql-optimization.pdf', 'file_2009_sql_opt', '2025-04-05 12:00:00'),
-       (2010, 1005, 100, 'database-normalization.png', 'image/png', 234560,
+       (2010, 1005, 100, 'database-normalization.png', '🗄️', 'image/png', 234560,
         '/storage/files/2025/04/db-normalization.png', 'file_2010_normalization', '2025-04-06 13:15:00'),
-       (2011, 1005, 100, 'indexing-strategies.pdf', 'application/pdf', 982400, '/storage/files/2025/04/indexing.pdf',
-        'file_2011_indexing', '2025-04-08 11:45:00');
+       (2011, 1005, 100, 'indexing-strategies.pdf', '🔍', 'application/pdf', 982400,
+        '/storage/files/2025/04/indexing.pdf', 'file_2011_indexing', '2025-04-08 11:45:00');
 
 -- Insert conversations
 INSERT INTO conversations (id, topic_id, user_id, title, message_count, first_message_preview, last_message_at,

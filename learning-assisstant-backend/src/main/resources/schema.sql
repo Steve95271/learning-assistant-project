@@ -49,6 +49,7 @@ CREATE TABLE topic_files (
                              topic_id BIGINT UNSIGNED NOT NULL COMMENT 'Reference to topics table',
                              user_id BIGINT UNSIGNED NOT NULL COMMENT 'File uploader',
                              filename VARCHAR(255) NOT NULL COMMENT 'Original filename',
+                             icon VARCHAR(32) NOT NULL COMMENT 'File emoji icon',
                              file_type VARCHAR(50) NOT NULL COMMENT 'File MIME type or extension',
                              file_size BIGINT UNSIGNED NOT NULL COMMENT 'File size in bytes',
                              storage_path VARCHAR(512) NOT NULL COMMENT 'Path to stored file',
