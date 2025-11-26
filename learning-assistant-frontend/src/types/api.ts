@@ -49,6 +49,6 @@ export interface TopicDetailVO {
   numberOfFiles: number;
   lastUpdated: string;
   sessionSummaries: SessionSummaryDTO[];
-  summaryNotePreview: SummaryNotePreviewDTO;
+  summaryNotePreview: SummaryNotePreviewDTO | null;
   fileInfoPreviews: FileInfoPreviewDTO[];
 }

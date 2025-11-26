@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
-import Header from '../components/layout/Header';
-import TopicHeader from '../components/topic/TopicHeader';
-import ContentGrid from '../components/layout/ContentGrid';
-import SessionsSection from '../components/sessions/SessionsSection';
-import Sidebar from '../components/layout/Sidebar';
-import SummaryCard from '../components/summary/SummaryCard';
-import FilesCard from '../components/files/FilesCard';
+import React, { useState } from "react";
+import Header from "../components/layout/Header";
+import TopicHeader from "../components/topic/TopicHeader";
+import ContentGrid from "../components/layout/ContentGrid";
+import SessionsSection from "../components/sessions/SessionsSection";
+import Sidebar from "../components/layout/Sidebar";
+import SummaryCard from "../components/summary/SummaryCard";
+import FilesCard from "../components/files/FilesCard";
 import type {
   Topic,
   QuickAction,
   Session,
   SummaryNote,
   FileItem,
-} from '../types';
+} from "../types";
 
 interface TopicDetailPageProps {
   topic: Topic;
   quickActions: QuickAction[];
   sessions: Session[];
-  summary: SummaryNote;
+  summary: SummaryNote | null;
   files: FileItem[];
   onBack?: () => void;
   onSettings?: () => void;
@@ -50,7 +50,9 @@ const TopicDetailPage: React.FC<TopicDetailPageProps> = ({
   const [summary, setSummary] = useState(initialSummary);
 
   const handleToggleAutoUpdate = (checked: boolean) => {
-    setSummary({ ...summary, autoUpdate: checked });
+    if (summary) {
+      setSummary({ ...summary, autoUpdate: checked });
+    }
   };
 
   return (

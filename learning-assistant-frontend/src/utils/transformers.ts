@@ -46,7 +46,11 @@ export function transformToSessions(
 
 export function transformToSummaryNote(
   preview: TopicDetailVO["summaryNotePreview"]
-): SummaryNote {
+): SummaryNote | null {
+  if (!preview) {
+    return null;
+  }
+
   return {
     title: preview.summaryNoteTitle,
     wordCount: preview.wordCount,

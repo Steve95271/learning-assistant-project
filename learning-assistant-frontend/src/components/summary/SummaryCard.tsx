@@ -4,7 +4,7 @@ import AutoUpdateIndicator from './AutoUpdateIndicator';
 import type { SummaryNote } from '../../types';
 
 interface SummaryCardProps {
-  summary: SummaryNote;
+  summary: SummaryNote | null;
   onToggleAutoUpdate: (checked: boolean) => void;
   onViewSummary: () => void;
 }
@@ -14,6 +14,22 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
   onToggleAutoUpdate,
   onViewSummary,
 }) => {
+  if (!summary) {
+    return (
+      <div className="bg-deep-blue/60 backdrop-blur-[40px] border border-white/[0.06] rounded-[20px] p-7">
+        <h3 className="text-lg font-semibold mb-5 tracking-tight">
+          Summary Note
+        </h3>
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <span className="text-4xl mb-4 opacity-40">💬</span>
+          <p className="text-muted-blue text-[15px]">
+            No conversation available to generate note
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-deep-blue/60 backdrop-blur-[40px] border border-white/[0.06] rounded-[20px] p-7">
       <h3 className="text-lg font-semibold mb-5 tracking-tight">
