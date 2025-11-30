@@ -18,6 +18,11 @@ export interface CreateTopicRequest {
   description?: string;
 }
 
+export interface UpdateTopicRequest {
+  name: string;
+  description?: string;
+}
+
 // Topic Detail API types
 export interface SessionSummaryDTO {
   id: number;
