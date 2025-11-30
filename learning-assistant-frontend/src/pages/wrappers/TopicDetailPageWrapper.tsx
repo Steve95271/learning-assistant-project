@@ -16,6 +16,7 @@ import type {
   Session,
   SummaryNote,
   FileItem,
+  UpdateTopicFormData,
 } from "../../types";
 import type { TopicDetailVO } from "../../types/api";
 
@@ -30,6 +31,7 @@ function TopicDetailPageWrapper() {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [summary, setSummary] = useState<SummaryNote | null>(null);
   const [files, setFiles] = useState<FileItem[]>([]);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchTopicDetail = async () => {
@@ -71,9 +73,34 @@ function TopicDetailPageWrapper() {
     navigate("/");
   };
 
-  const handleSettings = () => {
-    console.log("Open settings");
-    toast.info("Settings feature coming soon");
+  const handleEdit = () => {
+    setIsEditModalOpen(true);
+  };
+
+  const handleDelete = () => {
+    console.log("Delete topic");
+    toast.info("Delete feature coming soon");
+  };
+
+  const handleEditSubmit = async (data: UpdateTopicFormData) => {
+    if (!topicId) return;
+
+    try {
+      const updatedData: TopicDetailVO = await topicDetailService.updateTopic(
+        topicId,
+        data
+      );
+
+      // Update local state with new data
+      setTopic(transformToTopic(updatedData, topicId));
+      setIsEditModalOpen(false);
+      toast.success("Topic updated successfully!");
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to update topic";
+      toast.error(errorMessage);
+      console.error("Error updating topic:", err);
+    }
   };
 
   const handleNewConversation = () => {
@@ -171,7 +198,8 @@ function TopicDetailPageWrapper() {
       summary={summary}
       files={files}
       onBack={handleBack}
-      onSettings={handleSettings}
+      onEdit={handleEdit}
+      onDelete={handleDelete}
       onNewConversation={handleNewConversation}
       onActionClick={handleActionClick}
       onSessionClick={handleSessionClick}
@@ -179,6 +207,9 @@ function TopicDetailPageWrapper() {
       onFileClick={handleFileClick}
       onFileMenuClick={handleFileMenuClick}
       onUpload={handleUpload}
+      isEditModalOpen={isEditModalOpen}
+      onEditModalClose={() => setIsEditModalOpen(false)}
+      onEditSubmit={handleEditSubmit}
     />
   );
 }
