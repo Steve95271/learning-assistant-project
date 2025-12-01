@@ -68,6 +68,11 @@ export interface NewTopicFormData {
   description?: string;
 }
 
+export interface UpdateTopicFormData {
+  name: string;
+  description?: string;
+}
+
 // Chat Session Page Types
 export interface Message {
   id: string;

@@ -5,13 +5,18 @@
 const API_BASE_URL = "/api/v1";
 
 class ApiError extends Error {
+  public status: number;
+  public statusText: string;
+
   constructor(
-    public status: number,
-    public statusText: string,
+    status: number,
+    statusText: string,
     message?: string
   ) {
     super(message || `API Error: ${status} ${statusText}`);
     this.name = "ApiError";
+    this.status = status;
+    this.statusText = statusText;
   }
 }
 
@@ -27,6 +32,12 @@ async function fetchJSON<T>(url: string, options?: RequestInit): Promise<T> {
 
     if (!response.ok) {
       throw new ApiError(response.status, response.statusText);
+    }
+
+    // Check if response has content before parsing JSON
+    // 204 No Content responses have no body
+    if (response.status === 204 || response.headers.get('content-length') === '0') {
+      return undefined as T;
     }
 
     return await response.json();
@@ -55,6 +66,12 @@ export const api = {
     fetchJSON<T>(url, {
       ...options,
       method: "PUT",
+      body: JSON.stringify(data),
+    }),
+  patch: <T>(url: string, data?: unknown, options?: RequestInit) =>
+    fetchJSON<T>(url, {
+      ...options,
+      method: "PATCH",
       body: JSON.stringify(data),
     }),
   delete: <T>(url: string, options?: RequestInit) =>

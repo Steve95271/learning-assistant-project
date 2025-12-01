@@ -6,12 +6,14 @@ import SessionsSection from "../components/sessions/SessionsSection";
 import Sidebar from "../components/layout/Sidebar";
 import SummaryCard from "../components/summary/SummaryCard";
 import FilesCard from "../components/files/FilesCard";
+import EditTopicModal from "../components/topic/EditTopicModal";
 import type {
   Topic,
   QuickAction,
   Session,
   SummaryNote,
   FileItem,
+  UpdateTopicFormData,
 } from "../types";
 
 interface TopicDetailPageProps {
@@ -21,7 +23,8 @@ interface TopicDetailPageProps {
   summary: SummaryNote | null;
   files: FileItem[];
   onBack?: () => void;
-  onSettings?: () => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
   onNewConversation?: () => void;
   onActionClick?: (action: QuickAction) => void;
   onSessionClick?: (session: Session) => void;
@@ -29,6 +32,9 @@ interface TopicDetailPageProps {
   onFileClick?: (file: FileItem) => void;
   onFileMenuClick?: (file: FileItem) => void;
   onUpload?: (files: FileList) => void;
+  isEditModalOpen?: boolean;
+  onEditModalClose?: () => void;
+  onEditSubmit?: (data: UpdateTopicFormData) => void;
 }
 
 const TopicDetailPage: React.FC<TopicDetailPageProps> = ({
@@ -38,7 +44,8 @@ const TopicDetailPage: React.FC<TopicDetailPageProps> = ({
   summary: initialSummary,
   files,
   onBack,
-  onSettings,
+  onEdit,
+  onDelete,
   onNewConversation,
   onActionClick,
   onSessionClick,
@@ -46,6 +53,9 @@ const TopicDetailPage: React.FC<TopicDetailPageProps> = ({
   onFileClick,
   onFileMenuClick,
   onUpload,
+  isEditModalOpen = false,
+  onEditModalClose,
+  onEditSubmit,
 }) => {
   const [summary, setSummary] = useState(initialSummary);
 
@@ -59,7 +69,8 @@ const TopicDetailPage: React.FC<TopicDetailPageProps> = ({
     <div className="max-w-[1600px] mx-auto px-[60px] py-10 relative z-10">
       <Header
         onBack={onBack}
-        onSettings={onSettings}
+        onEdit={onEdit}
+        onDelete={onDelete}
         onNewConversation={onNewConversation}
       />
       <TopicHeader topic={topic} />
@@ -84,6 +95,17 @@ const TopicDetailPage: React.FC<TopicDetailPageProps> = ({
           />
         </Sidebar>
       </ContentGrid>
+
+      {/* Edit Topic Modal */}
+      <EditTopicModal
+        isOpen={isEditModalOpen}
+        onClose={onEditModalClose || (() => {})}
+        onSubmit={onEditSubmit || (() => {})}
+        initialData={{
+          name: topic.title,
+          description: topic.description,
+        }}
+      />
     </div>
   );
 };
