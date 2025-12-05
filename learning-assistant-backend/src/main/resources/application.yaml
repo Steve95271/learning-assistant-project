@@ -19,6 +19,15 @@ spring:
       client:
         enabled: false
 
+aws:
+  s3:
+    bucket-name: learning-assistant-bucket
+    region: ${AWS_S3_REGION:ap-east-1}
+    presigned-url-expiration-minutes: 15
+  credentials:
+    access-key: ${AWS_ACCESS_KEY_ID}
+    secret-key: ${AWS_SECRET_ACCESS_KEY}
+
 logging:
   level:
     org:
