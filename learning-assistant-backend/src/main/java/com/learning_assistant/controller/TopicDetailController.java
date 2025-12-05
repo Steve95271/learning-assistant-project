@@ -12,28 +12,28 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/topicDetail")
+@RequestMapping("/api/v1/topic-detail")
 public class TopicDetailController {
 
     private final TopicDetailService topicDetailService;
 
-    @GetMapping("/{topicId}")
-    public ResponseEntity<TopicDetailVO> getTopicDetailById(@PathVariable Long topicId) {
+    @GetMapping("/{topic-id}")
+    public ResponseEntity<TopicDetailVO> getTopicDetailById(@PathVariable("topic-id") Long topicId) {
         log.info("Get topic detail by id: {}", topicId);
         return ResponseEntity.ok(topicDetailService.getTopicDetailById(topicId));
     }
 
-    @PatchMapping("/{topicId}")
+    @PatchMapping("/{topic-id}")
     public ResponseEntity<TopicDetailVO> updateTopic(
-            @PathVariable Long topicId,
+            @PathVariable("topic-id") Long topicId,
             @RequestBody UpdateTopicDTO updateDTO
     ) {
         log.info("Update topic id: {}, data: {}", topicId, updateDTO);
         return ResponseEntity.ok(topicDetailService.updateTopic(topicId, updateDTO));
     }
 
-    @DeleteMapping("/{topicId}")
-    public ResponseEntity<Void> deleteTopic(@PathVariable Long topicId) {
+    @DeleteMapping("/{topic-id}")
+    public ResponseEntity<Void> deleteTopic(@PathVariable("topic-id") Long topicId) {
         log.info("Delete topic id: {}", topicId);
         topicDetailService.deleteTopic(topicId);
         return ResponseEntity.noContent().build();

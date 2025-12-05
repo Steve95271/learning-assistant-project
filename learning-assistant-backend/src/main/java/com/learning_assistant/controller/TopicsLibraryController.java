@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/topicsLibrary")
+@RequestMapping("/api/v1/topics-library")
 @Slf4j
 public class TopicsLibraryController {
 
@@ -23,7 +23,7 @@ public class TopicsLibraryController {
     }
 
     @GetMapping("/get-topics-by-user-id")
-    public ResponseEntity<List<TopicLibraryVO>> getTopicsByUserId(@RequestParam("userId") Long userId) {
+    public ResponseEntity<List<TopicLibraryVO>> getTopicsByUserId(@RequestParam("user-id") Long userId) {
         log.info("Get user topics by user id: {}", userId);
         return ResponseEntity.ok(topicLibraryService.getTopicsByUserId(userId));
     }

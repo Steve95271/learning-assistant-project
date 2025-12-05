@@ -6,7 +6,7 @@ export const topicDetailService = {
    * Fetch topic detail by topic ID
    */
   getTopicDetailById: async (topicId: string): Promise<TopicDetailVO> => {
-    return api.get<TopicDetailVO>(`/topicDetail/${topicId}`);
+    return api.get<TopicDetailVO>(`/topic-detail/${topicId}`);
   },
 
   /**
@@ -16,13 +16,13 @@ export const topicDetailService = {
     topicId: string,
     data: UpdateTopicRequest
   ): Promise<TopicDetailVO> => {
-    return api.patch<TopicDetailVO>(`/topicDetail/${topicId}`, data);
+    return api.patch<TopicDetailVO>(`/topic-detail/${topicId}`, data);
   },
 
   /**
    * Delete topic by topic ID (soft delete)
    */
   deleteTopic: async (topicId: string): Promise<void> => {
-    return api.delete<void>(`/topicDetail/${topicId}`);
+    return api.delete<void>(`/topic-detail/${topicId}`);
   },
 };

@@ -1,5 +1,5 @@
-import { api } from './api';
-import type { TopicLibraryViewDTO, CreateTopicRequest } from '../types/api';
+import { api } from "./api";
+import type { TopicLibraryViewDTO, CreateTopicRequest } from "../types/api";
 
 export const topicsLibraryService = {
   /**
@@ -7,14 +7,16 @@ export const topicsLibraryService = {
    */
   getTopicsByUserId: async (userId: number): Promise<TopicLibraryViewDTO[]> => {
     return api.get<TopicLibraryViewDTO[]>(
-      `/topicsLibrary/get-topics-by-user-id?userId=${userId}`
+      `/topics-library/get-topics-by-user-id?user-id=${userId}`
     );
   },
 
   /**
    * Create a new topic
    */
-  createTopic: async (data: CreateTopicRequest): Promise<TopicLibraryViewDTO> => {
-    return api.post<TopicLibraryViewDTO>('/topicsLibrary/create-topic', data);
+  createTopic: async (
+    data: CreateTopicRequest
+  ): Promise<TopicLibraryViewDTO> => {
+    return api.post<TopicLibraryViewDTO>("/topics-library/create-topic", data);
   },
 };
