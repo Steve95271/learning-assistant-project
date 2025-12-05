@@ -164,12 +164,23 @@ function TopicDetailPageWrapper() {
     console.log("File menu clicked:", file.name);
   };
 
-  const handleUpload = (files: FileList) => {
-    console.log(
-      "Files uploaded:",
-      Array.from(files).map((f) => f.name)
-    );
-    toast.success(`${files.length} file(s) uploaded successfully`);
+  const handleUploadComplete = async () => {
+    // Refetch topic detail to get updated file list
+    // TODO Can improve to fetch file list only
+    if (!topicId) return;
+
+    try {
+      const data: TopicDetailVO = await topicDetailService.getTopicDetailById(
+        topicId
+      );
+
+      // Update files list with fresh data
+      setFiles(transformToFiles(data.fileInfoPreviews));
+      setTopic(transformToTopic(data, topicId)); // Update topic to refresh file count
+    } catch (err) {
+      console.error("Error refetching topic detail after upload:", err);
+      // Don't show error toast, the upload already succeeded
+    }
   };
 
   // Loading state
@@ -214,6 +225,8 @@ function TopicDetailPageWrapper() {
       sessions={sessions}
       summary={summary}
       files={files}
+      topicId={topicId!}
+      userId={100} // TODO: Get from auth context when implemented
       onBack={handleBack}
       onEdit={handleEdit}
       onDelete={handleDelete}
@@ -223,7 +236,7 @@ function TopicDetailPageWrapper() {
       onViewSummary={handleViewSummary}
       onFileClick={handleFileClick}
       onFileMenuClick={handleFileMenuClick}
-      onUpload={handleUpload}
+      onUploadComplete={handleUploadComplete}
       isEditModalOpen={isEditModalOpen}
       onEditModalClose={() => setIsEditModalOpen(false)}
       onEditSubmit={handleEditSubmit}

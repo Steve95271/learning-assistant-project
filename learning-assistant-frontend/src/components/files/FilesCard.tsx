@@ -4,17 +4,21 @@ import UploadArea from './UploadArea';
 import type { FileItem as FileItemType } from '../../types';
 
 interface FilesCardProps {
+  topicId: string;
+  userId: number;
   files: FileItemType[];
   onFileClick?: (file: FileItemType) => void;
   onFileMenuClick?: (file: FileItemType) => void;
-  onUpload?: (files: FileList) => void;
+  onUploadComplete?: () => void;
 }
 
 const FilesCard: React.FC<FilesCardProps> = ({
+  topicId,
+  userId,
   files,
   onFileClick,
   onFileMenuClick,
-  onUpload,
+  onUploadComplete,
 }) => {
   return (
     <div className="bg-deep-blue/60 backdrop-blur-[40px] border border-white/[0.06] rounded-[20px] p-7">
@@ -29,7 +33,11 @@ const FilesCard: React.FC<FilesCardProps> = ({
           />
         ))}
       </div>
-      <UploadArea onUpload={onUpload} />
+      <UploadArea
+        topicId={topicId}
+        userId={userId}
+        onUploadComplete={onUploadComplete}
+      />
     </div>
   );
 };
