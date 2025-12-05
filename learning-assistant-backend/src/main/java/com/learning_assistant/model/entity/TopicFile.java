@@ -26,9 +26,10 @@ public class TopicFile implements Persistable<Long> {
     private String icon;
     private String fileType;
     private Long fileSize;
-    private String storagePath;
     private String storageKey;
+    private FileStatus status;
     private LocalDateTime uploadedAt;
+    private LocalDateTime createdAt;
     private LocalDateTime deletedAt;
 
     /*
@@ -39,6 +40,11 @@ public class TopicFile implements Persistable<Long> {
     */
     @Transient
     private Boolean isNew;
+
+    public enum FileStatus {
+        pending,
+        uploaded
+    }
 
     @Override
     public boolean isNew() {

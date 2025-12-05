@@ -22,6 +22,8 @@ interface TopicDetailPageProps {
   sessions: Session[];
   summary: SummaryNote | null;
   files: FileItem[];
+  topicId: string;
+  userId: number;
   onBack?: () => void;
   onEdit?: () => void;
   onDelete?: () => void;
@@ -31,7 +33,7 @@ interface TopicDetailPageProps {
   onViewSummary?: () => void;
   onFileClick?: (file: FileItem) => void;
   onFileMenuClick?: (file: FileItem) => void;
-  onUpload?: (files: FileList) => void;
+  onUploadComplete?: () => void;
   isEditModalOpen?: boolean;
   onEditModalClose?: () => void;
   onEditSubmit?: (data: UpdateTopicFormData) => void;
@@ -43,6 +45,8 @@ const TopicDetailPage: React.FC<TopicDetailPageProps> = ({
   sessions,
   summary: initialSummary,
   files,
+  topicId,
+  userId,
   onBack,
   onEdit,
   onDelete,
@@ -52,7 +56,7 @@ const TopicDetailPage: React.FC<TopicDetailPageProps> = ({
   onViewSummary,
   onFileClick,
   onFileMenuClick,
-  onUpload,
+  onUploadComplete,
   isEditModalOpen = false,
   onEditModalClose,
   onEditSubmit,
@@ -88,10 +92,12 @@ const TopicDetailPage: React.FC<TopicDetailPageProps> = ({
             onViewSummary={onViewSummary || (() => {})}
           />
           <FilesCard
+            topicId={topicId}
+            userId={userId}
             files={files}
             onFileClick={onFileClick}
             onFileMenuClick={onFileMenuClick}
-            onUpload={onUpload}
+            onUploadComplete={onUploadComplete}
           />
         </Sidebar>
       </ContentGrid>

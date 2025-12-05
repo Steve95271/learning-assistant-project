@@ -52,15 +52,17 @@ CREATE TABLE topic_files (
                              icon VARCHAR(32) NOT NULL COMMENT 'File emoji icon',
                              file_type VARCHAR(50) NOT NULL COMMENT 'File MIME type or extension',
                              file_size BIGINT UNSIGNED NOT NULL COMMENT 'File size in bytes',
-                             storage_path VARCHAR(512) NOT NULL COMMENT 'Path to stored file',
                              storage_key VARCHAR(255) NOT NULL UNIQUE COMMENT 'Unique storage identifier',
-                             uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+                             status ENUM('pending', 'uploaded') DEFAULT 'pending' NOT NULL COMMENT 'Upload status: pending (waiting for S3), uploaded (completed)',
+                             uploaded_at DATETIME DEFAULT NULL COMMENT 'Timestamp when file was successfully uploaded to S3',
+                             created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT 'Record creation time',
                              deleted_at DATETIME COMMENT 'Soft delete timestamp',
 
                              FOREIGN KEY (topic_id) REFERENCES topics(id) ON DELETE CASCADE,
                              FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
                              INDEX idx_topic_uploaded (topic_id, uploaded_at),
-                             INDEX idx_storage_key (storage_key)
+                             INDEX idx_storage_key (storage_key),
+                             INDEX idx_status_created (status, created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Files uploaded to topics';
 
 

@@ -22,13 +22,13 @@ public class TopicsLibraryController {
         this.topicLibraryService = topicLibraryService;
     }
 
-    @GetMapping("/getTopicsByUserId")
+    @GetMapping("/get-topics-by-user-id")
     public ResponseEntity<List<TopicLibraryVO>> getTopicsByUserId(@RequestParam("userId") Long userId) {
         log.info("Get user topics by user id: {}", userId);
         return ResponseEntity.ok(topicLibraryService.getTopicsByUserId(userId));
     }
 
-    @PostMapping("/createTopic")
+    @PostMapping("/create-topic")
     public ResponseEntity<TopicLibraryVO> createTopic (@RequestBody TopicDTO topicDTO) {
 
         log.info("Create topic, {}", topicDTO);

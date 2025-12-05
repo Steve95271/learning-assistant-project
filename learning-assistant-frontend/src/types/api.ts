@@ -57,3 +57,24 @@ export interface TopicDetailVO {
   summaryNotePreview: SummaryNotePreviewDTO | null;
   fileInfoPreviews: FileInfoPreviewDTO[];
 }
+
+// File Upload API types
+export interface FileUploadRequest {
+  topicId: number;
+  userId: number;
+  filename: string;
+  fileType: string; // MIME type
+  fileSize: number; // Bytes
+}
+
+export interface FileUploadResponse {
+  fileId: number;
+  presignedUrl: string;
+  storageKey: string;
+}
+
+export interface ConfirmUploadRequest {
+  fileId: number;
+  success: boolean;
+  errorMessage?: string;
+}

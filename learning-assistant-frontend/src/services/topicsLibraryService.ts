@@ -7,7 +7,7 @@ export const topicsLibraryService = {
    */
   getTopicsByUserId: async (userId: number): Promise<TopicLibraryViewDTO[]> => {
     return api.get<TopicLibraryViewDTO[]>(
-      `/topicsLibrary/getTopicsByUserId?userId=${userId}`
+      `/topicsLibrary/get-topics-by-user-id?userId=${userId}`
     );
   },
 
@@ -15,6 +15,6 @@ export const topicsLibraryService = {
    * Create a new topic
    */
   createTopic: async (data: CreateTopicRequest): Promise<TopicLibraryViewDTO> => {
-    return api.post<TopicLibraryViewDTO>('/topicsLibrary/createTopic', data);
+    return api.post<TopicLibraryViewDTO>('/topicsLibrary/create-topic', data);
   },
 };
