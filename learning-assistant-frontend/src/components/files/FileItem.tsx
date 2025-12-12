@@ -1,13 +1,26 @@
-import React from 'react';
-import type { FileItem as FileItemType } from '../../types';
+import React, { useRef, useState } from "react";
+import type { FileItem as FileItemType } from "../../types";
+import DropdownMenu from "../common/DropdownMenu";
 
 interface FileItemProps {
   file: FileItemType;
   onClick?: () => void;
-  onMenuClick?: () => void;
+  onDelete?: () => void;
 }
 
-const FileItem: React.FC<FileItemProps> = ({ file, onClick, onMenuClick }) => {
+const FileItem: React.FC<FileItemProps> = ({ file, onClick, onDelete }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLDivElement>(null);
+
+  const menuItems = [
+    {
+      label: "Delete",
+      onClick: () => onDelete?.(),
+      icon: "🗑️",
+      variant: "danger" as const,
+    },
+  ];
+
   return (
     <div
       onClick={onClick}
@@ -23,14 +36,23 @@ const FileItem: React.FC<FileItemProps> = ({ file, onClick, onMenuClick }) => {
         <div className="text-xs text-muted-blue">{file.size}</div>
       </div>
       <div
+        ref={menuButtonRef}
         onClick={(e) => {
           e.stopPropagation();
-          onMenuClick?.();
+          setIsMenuOpen(!isMenuOpen);
         }}
         className="w-8 h-8 rounded-lg bg-white/[0.04] flex items-center justify-center opacity-0 transition-all duration-300 group-hover:opacity-100"
       >
         ⋮
       </div>
+
+      {/* Dropdown menu */}
+      <DropdownMenu
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        items={menuItems}
+        triggerRef={menuButtonRef as React.RefObject<HTMLElement>}
+      />
     </div>
   );
 };

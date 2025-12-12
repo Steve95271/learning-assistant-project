@@ -32,7 +32,7 @@ interface TopicDetailPageProps {
   onSessionClick?: (session: Session) => void;
   onViewSummary?: () => void;
   onFileClick?: (file: FileItem) => void;
-  onFileMenuClick?: (file: FileItem) => void;
+  onFileDelete?: (file: FileItem) => void;
   onUploadComplete?: () => void;
   isEditModalOpen?: boolean;
   onEditModalClose?: () => void;
@@ -55,7 +55,7 @@ const TopicDetailPage: React.FC<TopicDetailPageProps> = ({
   onSessionClick,
   onViewSummary,
   onFileClick,
-  onFileMenuClick,
+  onFileDelete,
   onUploadComplete,
   isEditModalOpen = false,
   onEditModalClose,
@@ -96,7 +96,7 @@ const TopicDetailPage: React.FC<TopicDetailPageProps> = ({
             userId={userId}
             files={files}
             onFileClick={onFileClick}
-            onFileMenuClick={onFileMenuClick}
+            onFileDelete={onFileDelete}
             onUploadComplete={onUploadComplete}
           />
         </Sidebar>
