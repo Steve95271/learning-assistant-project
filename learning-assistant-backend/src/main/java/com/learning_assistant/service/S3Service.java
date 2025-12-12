@@ -1,5 +1,7 @@
 package com.learning_assistant.service;
 
+import com.learning_assistant.exception.S3ServiceException;
+
 /**
  * Service interface for Amazon S3 operations including pre-signed URL generation.
  */
@@ -12,7 +14,7 @@ public interface S3Service {
      * @param contentType the MIME type of the file
      * @param expirationMinutes the number of minutes until the URL expires
      * @return the pre-signed URL string
-     * @throws com.learning_assistant.exception.S3ServiceException if URL generation fails
+     * @throws S3ServiceException if URL generation fails
      */
     String generatePresignedUploadUrl(String storageKey, String contentType, int expirationMinutes);
 
@@ -24,4 +26,11 @@ public interface S3Service {
      * @return the constructed storage key
      */
     String constructStorageKey(String fileType);
+
+    /**
+     * Deletes an object from S3 bucket.
+     * @param storageKey the S3 object key to delete
+     * @throws S3ServiceException if deletion fails
+     */
+    void deleteObject(String storageKey);
 }

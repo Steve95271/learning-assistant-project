@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { toast } from "sonner";
-import { fileUploadService } from "../../services/fileUploadService";
+import { fileService } from "../../services/fileService";
 import { validateFiles } from "../../utils/fileValidation";
 
 interface UploadAreaProps {
@@ -54,7 +54,7 @@ const UploadArea: React.FC<UploadAreaProps> = ({
 
     try {
       // Step 1: Request pre-signed URL
-      uploadResponse = await fileUploadService.initiateUpload({
+      uploadResponse = await fileService.initiateUpload({
         topicId: Number(topicId),
         userId,
         filename: file.name,
@@ -70,7 +70,7 @@ const UploadArea: React.FC<UploadAreaProps> = ({
       );
 
       // Step 2: Upload to S3 with progress tracking
-      await fileUploadService.uploadToS3(
+      await fileService.uploadToS3(
         file,
         uploadResponse.presignedUrl,
         (progress) => {
@@ -81,7 +81,7 @@ const UploadArea: React.FC<UploadAreaProps> = ({
       );
 
       // Step 3: Confirm successful upload
-      await fileUploadService.confirmUpload({
+      await fileService.confirmUpload({
         fileId: uploadResponse.fileId,
         success: true,
       });
@@ -106,7 +106,7 @@ const UploadArea: React.FC<UploadAreaProps> = ({
       // Step 4: Handle errors - notify backend of failure
       if (uploadResponse?.fileId) {
         try {
-          await fileUploadService.confirmUpload({
+          await fileService.confirmUpload({
             fileId: uploadResponse.fileId,
             success: false,
             errorMessage:

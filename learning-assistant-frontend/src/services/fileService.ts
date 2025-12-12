@@ -5,7 +5,7 @@ import type {
   ConfirmUploadRequest,
 } from "../types/api";
 
-export const fileUploadService = {
+export const fileService = {
   /**
    * Initiates a file upload by requesting a pre-signed S3 URL from the backend.
    */
@@ -61,5 +61,15 @@ export const fileUploadService = {
       xhr.setRequestHeader("Content-Type", file.type);
       xhr.send(file);
     });
+  },
+
+  /**
+   * Delete a file from the topic.
+   * Performs soft delete in database and hard delete in S3.
+   * @param fileId
+   * @returns 204 No Content if success
+   */
+  deleteFile: async (fileId: string): Promise<void> => {
+    return api.delete<void>(`/files/${fileId}`);
   },
 };

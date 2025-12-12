@@ -2,6 +2,7 @@ package com.learning_assistant.service;
 
 import com.learning_assistant.exception.FileValidationException;
 import com.learning_assistant.exception.ResourceNotFoundException;
+import com.learning_assistant.exception.S3ServiceException;
 import com.learning_assistant.model.dto.ConfirmUploadDTO;
 import com.learning_assistant.model.dto.FileUploadRequestDTO;
 import com.learning_assistant.model.dto.FileUploadResponseDTO;
@@ -9,7 +10,7 @@ import com.learning_assistant.model.dto.FileUploadResponseDTO;
 /**
  * Service interface for file upload operations.
  */
-public interface FileUploadService {
+public interface FileService {
 
     /**
      * Initiates a file upload by generating a pre-signed S3 URL and creating a pending file record.
@@ -39,4 +40,13 @@ public interface FileUploadService {
      * @return the number of records deleted
      */
     int cleanupStalePendingUploads(int hoursThreshold);
+
+    /**
+     * Deletes a file by soft deleting the database record and hard deleting from S3.
+     * Also decrements the topic's file_count cache.
+     * @param fileId the unique identifier of the file to delete
+     * @throws ResourceNotFoundException if file not found or already deleted
+     * @throws S3ServiceException if S3 deletion fails
+     */
+    void deleteFile(Long fileId);
 }

@@ -1,14 +1,14 @@
-import React from 'react';
-import FileItem from './FileItem';
-import UploadArea from './UploadArea';
-import type { FileItem as FileItemType } from '../../types';
+import React from "react";
+import FileItem from "./FileItem";
+import UploadArea from "./UploadArea";
+import type { FileItem as FileItemType } from "../../types";
 
 interface FilesCardProps {
   topicId: string;
   userId: number;
   files: FileItemType[];
   onFileClick?: (file: FileItemType) => void;
-  onFileMenuClick?: (file: FileItemType) => void;
+  onFileDelete?: (file: FileItemType) => void;
   onUploadComplete?: () => void;
 }
 
@@ -17,7 +17,7 @@ const FilesCard: React.FC<FilesCardProps> = ({
   userId,
   files,
   onFileClick,
-  onFileMenuClick,
+  onFileDelete,
   onUploadComplete,
 }) => {
   return (
@@ -29,7 +29,7 @@ const FilesCard: React.FC<FilesCardProps> = ({
             key={file.id}
             file={file}
             onClick={() => onFileClick?.(file)}
-            onMenuClick={() => onFileMenuClick?.(file)}
+            onDelete={() => onFileDelete?.(file)}
           />
         ))}
       </div>

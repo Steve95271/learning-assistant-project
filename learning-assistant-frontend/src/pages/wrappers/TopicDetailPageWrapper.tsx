@@ -10,6 +10,7 @@ import {
   transformToFiles,
   generateQuickActions,
 } from "../../utils/transformers";
+import { fileService } from "../../services/fileService";
 import type {
   Topic,
   QuickAction,
@@ -160,8 +161,36 @@ function TopicDetailPageWrapper() {
     toast.info("File preview coming soon");
   };
 
-  const handleFileMenuClick = (file: FileItem) => {
-    console.log("File menu clicked:", file.name);
+  const handleFileDelete = async (file: FileItem) => {
+    if (!topicId) return;
+
+    // Confirm deletion with user
+    const confirmed = window.confirm(
+      `Are you sure you want to delete "${file.name}"? This action cannot be undone.`
+    );
+
+    if (!confirmed) return;
+
+    try {
+      // Send delete request
+      await fileService.deleteFile(file.id);
+      toast.success("File delete successfully!");
+
+      // Refetch topic detail
+      const data: TopicDetailVO = await topicDetailService.getTopicDetailById(
+        topicId
+      );
+
+      // Update state with new data
+      setFiles(transformToFiles(data.fileInfoPreviews));
+      // Update topic to new file count
+      setTopic(transformToTopic(data, topicId));
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to delete file";
+      toast.error(errorMessage);
+      console.error("Error deleting file:", err);
+    }
   };
 
   const handleUploadComplete = async () => {
@@ -235,7 +264,7 @@ function TopicDetailPageWrapper() {
       onSessionClick={handleSessionClick}
       onViewSummary={handleViewSummary}
       onFileClick={handleFileClick}
-      onFileMenuClick={handleFileMenuClick}
+      onFileDelete={handleFileDelete}
       onUploadComplete={handleUploadComplete}
       isEditModalOpen={isEditModalOpen}
       onEditModalClose={() => setIsEditModalOpen(false)}

@@ -3,10 +3,9 @@ package com.learning_assistant.controller;
 import com.learning_assistant.model.dto.ConfirmUploadDTO;
 import com.learning_assistant.model.dto.FileUploadRequestDTO;
 import com.learning_assistant.model.dto.FileUploadResponseDTO;
-import com.learning_assistant.service.FileUploadService;
+import com.learning_assistant.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/files")
-public class FileUploadController {
+public class FileController {
 
-    private final FileUploadService fileUploadService;
+    private final FileService fileService;
 
     /**
      * Initiates a file upload by generating a pre-signed S3 URL.
@@ -29,7 +28,7 @@ public class FileUploadController {
         log.info("Received file upload initiation request for topic: {}, filename: {}",
                 request.getTopicId(), request.getFilename());
 
-        FileUploadResponseDTO response = fileUploadService.initiateFileUpload(request);
+        FileUploadResponseDTO response = fileService.initiateFileUpload(request);
 
         return ResponseEntity.ok(response);
     }
@@ -45,8 +44,20 @@ public class FileUploadController {
         log.info("Received upload confirmation for file id: {}, success: {}",
                 confirmation.getFileId(), confirmation.getSuccess());
 
-        fileUploadService.confirmUpload(confirmation);
+        fileService.confirmUpload(confirmation);
 
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Deletes a file by soft deleting the database record, hard deleting from S3.
+     * @param fileId the file id
+     * @return 204 No Content if success
+     */
+    @DeleteMapping("/{fileId}")
+    public ResponseEntity<Void> deleteFile(@PathVariable Long fileId) {
+        log.info("Received file deletion request for file id: {}", fileId);
+        fileService.deleteFile(fileId);
         return ResponseEntity.noContent().build();
     }
 }
