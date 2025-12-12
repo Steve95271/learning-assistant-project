@@ -11,11 +11,10 @@ import com.learning_assistant.model.entity.Topic;
 import com.learning_assistant.model.entity.TopicFile;
 import com.learning_assistant.repository.TopicFileRepository;
 import com.learning_assistant.repository.TopicRepository;
-import com.learning_assistant.service.FileUploadService;
+import com.learning_assistant.service.FileService;
 import com.learning_assistant.service.S3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -29,7 +28,7 @@ import java.util.Set;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class FileUploadServiceImpl implements FileUploadService {
+public class FileServiceImpl implements FileService {
 
     private final Snowflake snowflake;
     private final S3Service s3Service;
@@ -165,6 +164,46 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     }
 
+    @Override
+    @Transactional
+    public void deleteFile(Long fileId) {
+        log.info("Deleting file with id: {}", fileId);
+
+        // Fetch file record
+        TopicFile topicFile = topicFileRepository.findById(fileId)
+                .orElseThrow(() -> new ResourceNotFoundException("TopicFile", fileId));
+
+        // Check if already deleted
+        if (topicFile.getStatus() == TopicFile.FileStatus.deleted) {
+            log.warn("Attempted to delete already deleted file: {}", fileId);
+            throw new ResourceNotFoundException("File has been deleted, ID: " + fileId);
+        }
+
+        // Chick if still pending to upload
+        if (topicFile.getStatus() == TopicFile.FileStatus.pending) {
+            log.warn("Attempted to delete pending upload file: {}", fileId);
+            throw new ResourceNotFoundException("File not upload yet, ID: " + fileId);
+        }
+
+        // Delete from S3 first (hard delete)
+        s3Service.deleteObject(topicFile.getStorageKey());
+
+        // Soft delete in DB
+        topicFile.setStatus(TopicFile.FileStatus.deleted);
+        topicFile.setDeletedAt(LocalDateTime.now(ZoneOffset.UTC));
+        topicFile.setIsNew(false);
+        topicFileRepository.save(topicFile);
+
+        // Decrement topic's file count
+        decrementTopicFileCount(topicFile.getTopicId());
+
+        log.info(
+                "Successfully deleted file: fileId={}, filename={}",
+                fileId,
+                topicFile.getFilename()
+        );
+    }
+
     /**
      * Validates file type and size.
      *
@@ -216,10 +255,30 @@ public class FileUploadServiceImpl implements FileUploadService {
 
         int currentCount = topic.getFileCount() != null ? topic.getFileCount() : 0;
         topic.setFileCount(currentCount + 1);
-        topic.setUpdatedAt(LocalDateTime.now(ZoneId.of(ZoneOffset.UTC.getId())));
+        topic.setUpdatedAt(LocalDateTime.now(ZoneOffset.UTC));
         topic.setIsNew(false);
         topicRepository.save(topic);
 
         log.debug("Incremented file count for topic {}: {} -> {}", topicId, currentCount, currentCount + 1);
+    }
+
+    /**
+     * Decrements the file_count field for a topic.
+     */
+    private void decrementTopicFileCount(Long topicId) {
+        Topic topic = topicRepository.findById(topicId)
+                .orElseThrow(() -> new ResourceNotFoundException("Topic", topicId));
+
+        int currentCount = topic.getFileCount() != null ? topic.getFileCount() : 0;
+        // Prevent negative counts
+        int newCount = Math.max(0, currentCount - 1);
+
+        topic.setFileCount(newCount);
+        topic.setUpdatedAt(LocalDateTime.now(ZoneOffset.UTC));
+        topic.setIsNew(false);
+        // TODO consider use atomic SQL update
+        topicRepository.save(topic);
+
+        log.debug("Decremented file count for topic {}: {} -> {}", topicId, currentCount, newCount);
     }
 }

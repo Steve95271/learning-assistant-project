@@ -1,5 +1,7 @@
 package com.learning_assistant.model.viewObject;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,6 +31,7 @@ public class TopicDetailVO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class SessionSummary {
+        @JsonSerialize(using = ToStringSerializer.class)
         private Long id;
         private String title;
         private String preview;
@@ -53,6 +56,7 @@ public class TopicDetailVO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class FileInfoPreview {
+        @JsonSerialize(using = ToStringSerializer.class)
         private Long fileId;
         private String icon;
         private String fileName;

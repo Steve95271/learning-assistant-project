@@ -43,7 +43,8 @@ public class TopicFile implements Persistable<Long> {
 
     public enum FileStatus {
         pending,
-        uploaded
+        uploaded,
+        deleted
     }
 
     @Override
